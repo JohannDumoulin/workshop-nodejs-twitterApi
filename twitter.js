@@ -21,7 +21,7 @@ const tweetStream = new Readable({
 function connectToTwitter() {
     const opts = {
         ...options,
-        path: TWT_API_SAMPLE_PATH,
+        path: TWT_API_SEARCH_PATH,
         method: "GET",
     }
 

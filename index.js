@@ -2,7 +2,8 @@ require("dotenv").config()
 const { pipeline } = require("stream")
 const WebSocket = require("ws")
 const server = require("./server")
-const {connectToTwitter, tweetStream} = require("./twitter")
+const { addSearchRules, getSearchRules, deleteSearchRules } = require("./search-rules")
+const { connectToTwitter, tweetStream } = require("./twitter")
 
 // Http Server
 server.listen(3000)
@@ -34,3 +35,23 @@ wsServer.on("connection", (client) => {
 
 // Connection to Twitter API
 connectToTwitter()
+
+// Clear and add filters
+async function resetRules() {
+    // Get existing filters
+    const existingRules = await getSearchRules()
+    const ids = existingRules?.data?.map(rule => rule.id)
+
+    // Clear filters
+    if (ids) {
+        await  deleteSearchRules(ids)
+    }
+
+    // Filters rules for tweets
+    addSearchRules([
+        { value: 'Nissan', tag: 'Nissan' },
+        { value: 'Toyota', tag: 'Toyota' },
+    ])
+}
+
+resetRules()
