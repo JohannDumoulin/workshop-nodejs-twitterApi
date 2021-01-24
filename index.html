@@ -5,21 +5,90 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Workshop Node JS</title>
+    <style>
+        body {
+            margin: 0;
+        }
+
+        section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            width: 30%;
+            flex: 1;
+            margin: 0 auto 100px auto;
+        }
+
+        .brand--container {
+            width: 50px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            justify-content: flex-end;
+        }
+
+        .brand--container__content {
+            width: 100%;
+        }
+
+        .brand--container__content--shadow {
+            display: block;
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            height: 100%;
+            width: 100%;
+            background-color: lightsteelblue;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .brand--container > p {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: -50px;
+        }
+    </style>
 </head>
 <body>
     <section>
         <h1>Workshop Node-Js</h1>
+
+        <div class="container">
+            <div class="brand--container">
+                <div class="brand--container__content first-bar-chart-js" style="background-color: #F57425"></div>
+                <span class="brand--container__content--shadow"></span>
+                <p>Nissan</p>
+            </div>
+            <div class="brand--container">
+                <div class="brand--container__content second-bar-chart-js" style="background-color: #00A5A8"></div>
+                <span class="brand--container__content--shadow"></span>
+                <p>Toyota</p>
+            </div>
+        </div>
     </section>
     <script>
         console.log("dans le navigateur")
         const socket = new WebSocket(`ws://${window.location.hostname}:${window.location.port}`);
+        const firstElement = document.querySelector('.first-bar-chart-js')
+        const secondElement = document.querySelector('.second-bar-chart-js')
 
         socket.addEventListener("message", async function (event) {
 
             try {
                 const data = JSON.parse(await event.data.text())
                 console.log("message from server: ", data)
+
+                firstElement.style.height = `${(100 * data.nissan) / data.total}%`
+                secondElement.style.height = `${(100 * data.toyota) / data.total}%`
 
             } catch(err) {
 
