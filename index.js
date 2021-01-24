@@ -39,7 +39,7 @@ wsServer.on("connection", (client) => {
 connectToTwitter()
 
 // Clear and add filters
-async function resetRules() {
+async function resetRules(firstRule, secondRule) {
     // Get existing filters
     const existingRules = await getSearchRules()
     const ids = existingRules?.data?.map(rule => rule.id)
@@ -51,9 +51,13 @@ async function resetRules() {
 
     // Filters rules for tweets
     addSearchRules([
-        { value: 'Nissan', tag: 'Nissan' },
-        { value: 'Toyota', tag: 'Toyota' },
+        { value: firstRule, tag: firstRule },
+        { value: secondRule, tag: secondRule },
     ])
 }
 
-resetRules()
+resetRules("Nissan", "Toyota")
+
+module.exports = {
+    resetRules
+}

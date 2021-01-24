@@ -74,12 +74,26 @@
                 <p>Toyota</p>
             </div>
         </div>
+
+        <form action="">
+            <input type="text" class="first-input-js">
+            <input type="text"class="second-input-js">
+            <button type="button" class="load-js">Load</button>
+        </form>
     </section>
     <script>
         console.log("dans le navigateur")
         const socket = new WebSocket(`ws://${window.location.hostname}:${window.location.port}`);
+        // const { resetRules } = require("./index")
+
+        let firstRule = "Nissan"
+        let secondRule = "Toyota"
+
         const firstElement = document.querySelector('.first-bar-chart-js')
         const secondElement = document.querySelector('.second-bar-chart-js')
+        const loadButton = document.querySelector('.load-js')
+
+        // resetRules(firstRule, secondRule)
 
         socket.addEventListener("message", async function (event) {
 
@@ -101,6 +115,18 @@
 
             socket.send("Hello from client")
         });
+
+        loadButton.addEventListener("click", () => {
+            const firstInput = document.querySelector('.first-input-js')
+            const secondInput = document.querySelector('.second-input-js')
+
+            firstRule = firstInput.value
+            secondRule = secondInput.value
+
+            console.log(firstRule, secondRule)
+
+            // resetRules(firstRule, secondRule)
+        })
 
     </script>
 </body>
