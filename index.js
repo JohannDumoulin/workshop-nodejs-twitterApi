@@ -4,6 +4,7 @@ const WebSocket = require("ws")
 const server = require("./server")
 const { addSearchRules, getSearchRules, deleteSearchRules } = require("./search-rules")
 const { connectToTwitter, tweetStream } = require("./twitter")
+const { tweetCounter } = require("./process-tweets")
 
 // Http Server
 server.listen(3000)
@@ -22,6 +23,7 @@ wsServer.on("connection", (client) => {
     const socketStream = WebSocket.createWebSocketStream(client);
     pipeline(
         tweetStream,
+        tweetCounter,
         socketStream,
         (err) => {
             if (err) {
